@@ -21,7 +21,7 @@ export default function App() {
       </div>
 
       {/* Main Document Container */}
-      <div className="max-w-[1123px] mx-auto bg-white p-10 md:p-14 shadow-md print:shadow-none print:p-0 print:max-w-none">
+      <div className="max-w-[210mm] mx-auto bg-white p-10 md:p-12 shadow-md print:shadow-none print:p-0 print:max-w-none print:w-full">
         {/* Header Section */}
         <header className="text-center mb-8 border-b-2 border-gray-800 pb-6 avoid-break">
           <div className="flex justify-center mb-4">
