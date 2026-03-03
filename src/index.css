@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-gray-100 text-gray-800 font-sans antialiased;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  body {
+    background-color: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure inputs and textareas show their borders and content cleanly on print */
+  input,
+  textarea {
+    border: none !important;
+    border-bottom: 1px solid #000 !important;
+    background: transparent !important;
+    color: #000 !important;
+    resize: none;
+    padding: 0 !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* Specific override for boxed inputs if any */
+  .boxed-input {
+    border: 1px solid #000 !important;
+  }
+
+  /* Enhance table borders for printing */
+  table,
+  th,
+  td {
+    border: 1px solid #000 !important;
+  }
+  
+  /* Hide placeholders on print */
+  input::placeholder,
+  textarea::placeholder {
+    color: transparent;
+  }
+}
+
+/* Custom styles for form elements */
+.form-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #9ca3af;
+  background-color: transparent;
+  outline: none;
+  padding: 2px 4px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-bottom-color: #3b82f6;
+}
+
+.form-textarea {
+  width: 100%;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  padding: 8px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.form-textarea:focus {
+  border-color: #3b82f6;
+}
