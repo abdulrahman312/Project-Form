@@ -11,22 +11,38 @@ import { AutoResizeTextarea } from './components/AutoResizeTextarea';
 
 export default function App() {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isGenerating, setIsGenerating] = React.useState(false);
 
   const handlePrint = () => {
     window.print();
   };
 
-  const handleDownloadPDF = () => {
-    const element = contentRef.current;
-    const opt = {
-      margin: 10,
-      filename: 'MEIS_Project_Report.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
+  const handleDownloadPDF = async () => {
+    setIsGenerating(true);
+    // Allow UI to update before starting heavy PDF generation
+    await new Promise(resolve => setTimeout(resolve, 100));
 
-    html2pdf().set(opt).from(element).save();
+    try {
+      const element = contentRef.current;
+      const opt = {
+        margin: [10, 10], // Top/Bottom, Left/Right
+        filename: 'MEIS_Project_Report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true,
+          letterRendering: true,
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      await html2pdf().set(opt).from(element).save();
+    } catch (e) {
+      console.error('PDF generation failed', e);
+      alert('PDF generation failed. Please use the Print button to save as PDF.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -42,10 +58,11 @@ export default function App() {
         </button>
         <button
           onClick={handleDownloadPDF}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 flex items-center gap-2 cursor-pointer"
+          disabled={isGenerating}
+          className={`${isGenerating ? 'bg-blue-400 cursor-wait' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'} text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 flex items-center gap-2`}
         >
           <Download className="h-5 w-5" />
-          Save as PDF
+          {isGenerating ? 'Generating...' : 'Save as PDF'}
         </button>
       </div>
 
